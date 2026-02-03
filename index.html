@@ -1,1 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Logarithms – Laws & Engineering Maths Problems</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root{
+      --accent:#6a5cff; --accent2:#00c2ff; --ink:#0f172a; --muted:#55607a;
+      --success:#2e7d32; --error:#e53935; --surface:#ffffff; --field-w:10.8rem;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;
+      margin:0;color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #dfe8ff, transparent 60%),
+        radial-gradient(1200px 600px at 110% 10%, #ccfbff, transparent 60%),
+        linear-gradient(180deg,#f5f8ff 0%, #f0fbff 50%, #eef3ff 100%);
+      min-height:100vh; overflow-x:hidden;
+    }
+    h1{
+      margin:0.5rem 0 0.2rem;text-align:center;
+      font-size:1.42rem;font-weight:900;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      letter-spacing:.2px
+    }
+    p.lede{max-width:980px;margin:0.15rem auto 0.4rem;text-align:center;color:#1f2a44}
+
+    .logo{
+      position:absolute;top:10px;left:10px;width:96px;height:96px;border-radius:14px;
+      box-shadow:0 6px 18px rgba(0,0,0,.15);
+      background:#fff;border:1px solid rgba(106,92,255,.25);
+      display:grid;place-items:center;overflow:hidden
+    }
+    .logo svg{width:92px;height:92px}
+
+    .topbar{
+      max-width:980px;margin:0.1rem auto 0.4rem;display:flex;gap:0.6rem;
+      justify-content:space-between;align-items:center;padding:0 0.6rem
+    }
+    .badge{
+      background:#fff;border:1px solid rgba(106,92,255,.25);border-radius:14px;
+      padding:0.35rem 0.55rem;font-weight:800;min-width:110px;text-align:center;
+      box-shadow:0 3px 10px rgba(106,92,255,.08)
+    }
+    .badge small{display:block;font-weight:600;color:var(--muted);margin-top:2px;font-size:.8rem}
+    .fsBtn{
+      border:1px solid rgba(0,194,255,.5);background:linear-gradient(180deg,#ffffff,#f3fcff);
+      border-radius:12px;padding:.45rem .7rem;font-weight:900;cursor:pointer;color:#0b3d4a;
+      box-shadow:0 3px 10px rgba(0,194,255,.15)
+    }
+
+    .card{
+      max-width:980px;margin:0.25rem auto;background:var(--surface);border-radius:16px;
+      border:2px solid rgba(106,92,255,.35);
+      box-shadow:0 12px 28px rgba(106,92,255,.12), 0 6px 14px rgba(0,0,0,.06);
+      padding:0.8rem
+    }
+    .titleRow{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+    .qTitle{font-size:1.08rem;font-weight:900;color:#2c3477;margin:0.05rem 0}
+    .qMeta{color:var(--muted);font-size:.93rem}
+    .statement{font-size:0.98rem;margin:0.4rem 0 0.5rem}
+
+    details{border:1px solid rgba(106,92,255,.3);border-radius:12px;margin:0.35rem 0;background:#fbfcff}
+    summary{cursor:pointer;font-weight:900;color:#2c3477;padding:0.5rem 0.7rem;list-style:none}
+    summary::-webkit-details-marker{display:none}
+    .hint{padding:0 0.8rem 0.7rem;font-size:.92rem;color:#1f2a44}
+
+    .io{display:grid;gap:0.6rem;margin-top:0.35rem}
+    .row{display:grid;grid-template-columns:1.2fr auto auto auto 1fr;align-items:center;gap:.45rem}
+    .row label{font-weight:900;color:#1f2a44}
+    .unit{
+      background:linear-gradient(180deg,#eef4ff,#f7fbff);
+      border:1px solid rgba(0,194,255,.35);
+      color:#173a56;border-radius:10px;padding:0.3rem 0.55rem;font-weight:900;min-width:6.2rem;text-align:center
+    }
+    .num{
+      width:var(--field-w);text-align:center;border:1px solid rgba(106,92,255,.45);
+      border-radius:10px;font-size:1.0rem;padding:.44rem .36rem;background:linear-gradient(180deg,#ffffff,#f6f7ff);
+      box-shadow:inset 0 1px 2px rgba(0,0,0,.06)
+    }
+    .num:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(106,92,255,.18)}
+
+    .marker{font-size:1.35rem;font-weight:900;min-width:1.7rem;text-align:center}
+    .ok{color:#2e7d32; animation:pop .25s ease-out}
+    .no{color:#e53935}
+    @keyframes pop { 0%{transform:scale(0.85)} 100%{transform:scale(1)} }
+    .feedback{font-size:0.92rem;color:#1f2a44}
+
+    .controls{display:flex;justify-content:center;gap:.5rem;margin-top:.55rem;flex-wrap:wrap}
+    button.primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:#fff;border:none;border-radius:12px;padding:.6rem 1.0rem;font-weight:900;cursor:pointer;
+      box-shadow:0 8px 18px rgba(106,92,255,.25)
+    }
+    button.secondary{
+      background:#111827;color:#fff;border:none;border-radius:12px;padding:.6rem 1.0rem;font-weight:900;cursor:pointer
+    }
+    button.ghost{
+      background:linear-gradient(180deg,#ffffff,#f7f9ff);border:1px solid rgba(17,24,39,.25);
+      border-radius:12px;padding:.5rem .9rem;font-weight:900;cursor:pointer;color:#111827
+    }
+    button:disabled{opacity:.6;cursor:not-allowed}
+    #progress{font-weight:900;text-align:center;color:#111827;margin:0.12rem 0 0.45rem}
+
+    #endCard{max-width:820px;margin:0.6rem auto;padding:0.8rem;border-radius:14px;background:#fff;border:2px solid #2e7d32;display:none}
+    #endCard h3{margin-top:0;color:#1e7a31}
+    .wellDone{display:inline-block;background:#eaf7ec;border:1px solid #b9e2bf;color:#1e7a31;padding:.22rem .48rem;border-radius:8px;font-weight:900}
+
+    @media (max-width:680px){
+      .row{grid-template-columns:1fr auto auto auto 1fr}
+      .num{width:8.6rem}
+      .logo{width:84px;height:84px}
+    }
+
+    .modal{position:fixed;inset:0;background:rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:999}
+    .panel{background:linear-gradient(180deg,#ffffff,#f7f8ff);border-radius:16px;max-width:780px;width:100%;box-shadow:0 18px 40px rgba(17,24,39,.25);border:2px solid rgba(106,92,255,.35)}
+    .panel header{padding:0.8rem 1rem;border-bottom:1px solid rgba(106,92,255,.25)}
+    .panel .content{padding:0.8rem;display:grid;gap:0.7rem}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
+    .field{display:grid;gap:0.3rem}
+    .field input[type=text], .field input[type=number], .field select{
+      padding:0.5rem .55rem;border:1px solid rgba(106,92,255,.4);border-radius:10px;background:#fff
+    }
+    .choiceRow{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+    .pill{border:1px solid rgba(106,92,255,.45);padding:.32rem .6rem;border-radius:999px;cursor:pointer;font-weight:900;background:#fff}
+    .pill input{margin-right:.32rem}
+    .panel footer{display:flex;justify-content:space-between;align-items:center;padding:0.7rem 1rem;border-top:1px solid rgba(106,92,255,.25)}
+    .muted{color:var(--muted);font-size:.9rem}
+
+    #errBanner{display:none;position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
+      background:#fee;border:2px solid #e53935;color:#7f1d1d;padding:.5rem .8rem;border-radius:10px;font-weight:800;z-index:2000;max-width:min(980px,95vw)}
+
+    .graphWrap{
+      border:2px solid rgba(0,194,255,.22);
+      border-radius:14px;
+      padding:.55rem;
+      background:
+        radial-gradient(600px 260px at 20% 10%, rgba(106,92,255,.08), transparent 60%),
+        radial-gradient(600px 260px at 90% 20%, rgba(0,194,255,.08), transparent 60%),
+        linear-gradient(180deg,#ffffff,#fbfdff);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+    }
+    canvas{width:100%; height:320px; display:block; border-radius:10px;}
+    .graphCaption{
+      margin-top:.35rem;
+      display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      color:#1f2a44; font-size:.92rem;
+    }
+    .chip{
+      display:inline-flex; gap:.35rem; align-items:center;
+      padding:.22rem .5rem; border-radius:999px;
+      border:1px solid rgba(106,92,255,.35);
+      background:#fff; font-weight:900;
+    }
+    .chip small{font-weight:700;color:var(--muted)}
+    .miniTable{
+      width:100%; border-collapse:collapse; margin-top:.35rem;
+      font-size:.92rem; background:#fff; border:1px solid rgba(106,92,255,.25); border-radius:10px; overflow:hidden
+    }
+    .miniTable th,.miniTable td{padding:.35rem .5rem;border-bottom:1px solid rgba(106,92,255,.18);text-align:center}
+    .miniTable th{background:#f6f8ff;color:#2c3477;font-weight:900}
+    .miniTable tr:last-child td{border-bottom:none}
+  </style>
+</head>
+<body>
+  <div class="logo" aria-label="Logo">
+    <svg viewBox="0 0 100 100" role="img">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#6a5cff"/>
+          <stop offset="1" stop-color="#00c2ff"/>
+        </linearGradient>
+      </defs>
+      <rect x="6" y="6" width="88" height="88" rx="18" fill="url(#g)" opacity="0.15"/>
+      <path d="M16 68 C28 48, 40 56, 52 30 S 80 26, 84 42" fill="none" stroke="url(#g)" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="52" cy="40" r="6.5" fill="url(#g)"/>
+      <path d="M22 78 H78" stroke="#0f172a" stroke-width="6" stroke-linecap="round" opacity="0.25"/>
+    </svg>
+  </div>
+
+  <h1>Logarithms: Laws & Engineering Maths Problems</h1>
+  <p class="lede">
+    <strong>Round every answer to 2 dp.</strong>
+    Marking is <strong>strict to 2 dp</strong> (your rounded answer must match the expected rounded answer).
+  </p>
+
+  <div class="topbar">
+    <div style="display:flex;gap:0.6rem;align-items:center">
+      <div class="badge" id="who"><span id="whoName">Student</span><small>Participant</small></div>
+      <div class="badge" id="mode"><span id="modeTxt">Timed</span><small>Mode</small></div>
+      <div class="badge" id="timer"><span id="timeTxt">—</span><small>Timer</small></div>
+      <div class="badge" id="scoreTop"><span id="scoreTopVal">0 / 0</span><small>Score</small></div>
+    </div>
+    <div class="top-actions">
+      <button class="fsBtn" id="fsBtn" title="Toggle full screen">⛶ Full screen</button>
+    </div>
+  </div>
+
+  <div class="card" id="globalHint">
+    <details>
+      <summary>Quick refresher (log rules you’ll use)</summary>
+      <div class="hint">
+        <ul>
+          <li><strong>Natural log meaning:</strong> \(\ln(x)=\log_e(x)\), where \(e\approx 2.71828\).</li>
+          <li><strong>Domain:</strong> \(\log_b(x)\) requires \(x&gt;0\), \(b&gt;0\), \(b\neq 1\).</li>
+          <li><strong>Product:</strong> \(\log_b(MN)=\log_b(M)+\log_b(N)\)</li>
+          <li><strong>Quotient:</strong> \(\log_b(M/N)=\log_b(M)-\log_b(N)\)</li>
+          <li><strong>Power:</strong> \(\log_b(M^k)=k\log_b(M)\)</li>
+          <li><strong>Change of base:</strong> \(\log_b(M)=\dfrac{\ln(M)}{\ln(b)}\)</li>
+          <li><strong>Inverse:</strong> \(\log_b(x)=y \iff x=b^y\)</li>
+          <li><strong>Special values:</strong> \(\log_b(1)=0\) and \(\log_b(b)=1\)</li>
+        </ul>
+        <div style="margin-top:.4rem;color:#55607a">
+          Used in: decibels, pH, exponential growth/decay, and turning multiplication into addition.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card" id="qCard" style="display:none">
+    <div class="titleRow">
+      <div>
+        <div class="qTitle" id="qTitle">Question</div>
+        <div class="qMeta" id="qMeta">Apply logarithm rules carefully.</div>
+      </div>
+      <div class="qMeta" id="progress">Question 1</div>
+    </div>
+
+    <div class="statement" id="statement"></div>
+
+    <div class="graphWrap" aria-label="Diagram area">
+      <canvas id="graphCanvas" width="920" height="320" aria-label="Diagram"></canvas>
+      <div class="graphCaption">
+        <div class="chip"><small id="chipLeftLbl">Base</small> <span id="chipLeftVal">—</span></div>
+        <div class="chip"><small id="chipMidLbl">Task</small> <span id="chipMidVal">—</span></div>
+        <div class="chip"><small id="chipRightLbl">Note</small> <span id="chipRightVal">—</span></div>
+      </div>
+    </div>
+
+    <div id="auxTableWrap" style="display:none"></div>
+
+    <details id="hintBox">
+      <summary>Hints (click to expand)</summary>
+      <div class="hint" id="hintHtml"></div>
+    </details>
+
+    <details id="logicBox">
+      <summary>Log law logic (why the rules work)</summary>
+      <div class="hint" id="logicHtml"></div>
+    </details>
+
+    <details id="whyBox">
+      <summary>Why this matters (click to expand)</summary>
+      <div class="hint" id="whyHtml"></div>
+    </details>
+
+    <div class="io">
+      <div class="row">
+        <label>Answer</label>
+        <input class="num" id="ansVal" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 1.26">
+        <span class="unit" id="unitOut">—</span>
+        <span class="marker" id="markAns"></span>
+        <span class="feedback" id="fbAns"></span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="primary" id="checkBtn">Check</button>
+      <button class="ghost" id="nextBtn" disabled>Next</button>
+      <button class="secondary" id="newBtn">New questions</button>
+    </div>
+  </div>
+
+  <div id="endCard">
+    <h3>Summary</h3>
+    <p class="wellDone" id="endMsg"></p>
+    <ul>
+      <li><strong>Name:</strong> <span id="sumName"></span></li>
+      <li><strong>Mode:</strong> <span id="sumMode"></span></li>
+      <li><strong>Score:</strong> <span id="sumScore"></span></li>
+      <li><strong>Time used:</strong> <span id="sumTime"></span></li>
+    </ul>
+    <div style="display:flex;gap:.6rem;justify-content:center;margin-top:.3rem">
+      <button class="secondary" id="restartBtn">Restart</button>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div class="modal" id="startModal" style="display:flex">
+    <div class="panel">
+      <header><h2 style="margin:0;color:#2c3477">Start Activity</h2></header>
+      <div class="content">
+        <div class="field">
+          <label for="nameInput"><strong>Your name</strong></label>
+          <input id="nameInput" type="text" placeholder="Type your name…" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label><strong>Mode</strong></label>
+          <div class="choiceRow">
+            <label class="pill"><input type="radio" name="mode" value="timed" checked>Timed</label>
+            <label class="pill"><input type="radio" name="mode" value="target">Target</label>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="field" id="timedField" style="display:block">
+            <label><strong>Time limit</strong></label>
+            <div class="choiceRow">
+              <label class="pill"><input type="radio" name="tlimit" value="600">10 minutes</label>
+              <label class="pill"><input type="radio" name="tlimit" value="1200" checked>20 minutes</label>
+              <label class="pill"><input type="radio" name="tlimit" value="1800">30 minutes</label>
+              <label class="pill"><input type="radio" name="tlimit" value="0">Unlimited</label>
+            </div>
+          </div>
+
+          <div class="field" id="targetField" style="display:none">
+            <label for="targetInput"><strong>Target (correct answers to finish)</strong></label>
+            <input id="targetInput" type="number" min="1" max="1000" step="1" value="10">
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="qtyInput"><strong>Total questions (per set)</strong></label>
+            <select id="qtyInput">
+              <option value="8">8</option>
+              <option value="10" selected>10</option>
+              <option value="12">12</option>
+              <option value="15">15</option>
+            </select>
+          </div>
+          <div class="field">
+            <div class="muted">
+              Includes: <strong>log laws</strong> (also individually), <strong>change of base</strong>,
+              <strong>solving log equations</strong>, <strong>engineering applications</strong>, and <strong>direct log evaluation</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <span class="muted">Generate a fresh random set any time.</span>
+        <div><button class="primary" id="startBtn">Start</button></div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="errBanner"></div>
+  <noscript><div style="margin:0.6rem auto;max-width:980px;color:#b91c1c;background:#fee;border:2px solid #e11d48;padding:.6rem;border-radius:12px;font-weight:800">This activity needs JavaScript enabled.</div></noscript>
+
+<script>
+'use strict';
+
+/* ========== Crash banner (shows real JS errors) ========== */
+(function(){
+  const showErr = (msg) => {
+    const b = document.getElementById('errBanner');
+    if(!b) return;
+    b.textContent = String(msg || 'Unknown error');
+    b.style.display = 'block';
+  };
+  window.addEventListener('error', (e) => showErr('Error: ' + (e.message || e.error || 'Unknown script error')));
+  window.addEventListener('unhandledrejection', (e) => showErr('Promise error: ' + (e.reason?.message || e.reason || 'Unknown promise rejection')));
+})();
+
+window.addEventListener('DOMContentLoaded', () => {
+
+  /* ========= Minimal safety: check required elements exist ========= */
+  const mustIds = [
+    'startModal','startBtn','nameInput','qtyInput','qCard','globalHint','graphCanvas',
+    'qTitle','qMeta','statement','hintHtml','logicHtml','whyHtml','ansVal','unitOut','markAns','fbAns',
+    'nextBtn','checkBtn','newBtn','restartBtn','endCard','endMsg','sumName','sumMode','sumScore','sumTime',
+    'whoName','modeTxt','timeTxt','scoreTopVal',
+    'chipLeftLbl','chipLeftVal','chipMidLbl','chipMidVal','chipRightLbl','chipRightVal'
+  ];
+  for(const id of mustIds){
+    if(!document.getElementById(id)){
+      const b = document.getElementById('errBanner');
+      if(b){
+        b.textContent = 'Missing element id="' + id + '". You likely pasted an incomplete file.';
+        b.style.display = 'block';
+      }
+      return;
+    }
+  }
+
+  /* ========= Helpers ========= */
+  const rndInt=(m,M)=>Math.floor(Math.random()*(M-m+1))+m;
+  const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+
+  const log10 = (x)=> Math.log(x) / Math.LN10;
+
+  const roundN = (x, n) => {
+    const p = Math.pow(10, n);
+    let y = Math.round((+x + Number.EPSILON) * p) / p;
+    if(Object.is(y, -0)) y = 0;
+    return y;
+  };
+  const round2 = x => roundN(x,2);
+  const to2 = x => isFinite(x) ? round2(x).toFixed(2) : '—';
+
+  const parseNum = (input) => {
+    const raw = (typeof input === 'string' ? input : (input?.value ?? '')).toString().trim().replace(',','.');
+    const x = parseFloat(raw);
+    return isFinite(x)?x:NaN;
+  };
+
+  const secsToMMSS = s => {
+    const m = Math.floor(s/60);
+    const ss = String(s%60).padStart(2,'0');
+    return `${m}:${ss}`;
+  };
+
+  const isCorrect2dp = (stu, expected) => round2(stu) === round2(expected);
+
+  const isE = (b) => Math.abs(b - Math.E) < 1e-12;
+  const baseLabel = (b) => isE(b) ? 'e' : String(b);
+  const logTex = (b) => isE(b) ? '\\ln' : `\\log_{${baseLabel(b)}}`;
+  const logBase = (x,b) => Math.log(x) / Math.log(b);
+
+  /* ========= Hints: ALWAYS append full rules recap ========= */
+  const RULES_RECAP_HTML = `
+    <hr style="border:none;border-top:1px solid rgba(106,92,255,.22);margin:.55rem 0">
+    <div style="font-weight:900;color:#2c3477;margin-bottom:.25rem">Log rules recap (use these as needed)</div>
+    <ul style="margin:.2rem 0 .1rem 1.05rem;padding:0">
+      <li><strong>Natural log:</strong> \\(\\ln(x)=\\log_e(x)\\), where \\(e\\approx 2.71828\\).</li>
+      <li><strong>Domain:</strong> \\(\\log_b(x)\\) needs \\(x&gt;0\\), \\(b&gt;0\\), \\(b\\neq 1\\).</li>
+      <li><strong>Product rule:</strong> \\(\\log_b(MN)=\\log_b(M)+\\log_b(N)\\)</li>
+      <li><strong>Quotient rule:</strong> \\(\\log_b(M/N)=\\log_b(M)-\\log_b(N)\\)</li>
+      <li><strong>Power rule:</strong> \\(\\log_b(M^k)=k\\,\\log_b(M)\\)</li>
+      <li><strong>Change of base:</strong> \\(\\log_a(b)=\\dfrac{\\ln(b)}{\\ln(a)}\\)</li>
+      <li><strong>Inverse form:</strong> \\(\\log_b(x)=y \\iff x=b^y\\)</li>
+      <li><strong>Special values:</strong> \\(\\log_b(1)=0\\) and \\(\\log_b(b)=1\\).</li>
+    </ul>
+  `;
+
+  /* ========= LOGIC TAB: your full MathML document embedded exactly ========= */
+  const LOGIC_MATHML_DOC = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Log Rules (with Why They Work) — MathML</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.45; margin: 24px; }
+    h1 { margin-top: 0; }
+    section { margin: 18px 0 26px; padding: 14px 16px; border: 1px solid #ddd; border-radius: 10px; }
+    h2 { margin: 0 0 10px; }
+    h3 { margin: 14px 0 8px; }
+    .note { color: #333; }
+    .mathline { margin: 10px 0; }
+    ul { margin: 8px 0 0 20px; }
+    code { background: #f6f6f6; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+
+<body>
+  <h1>Logarithm Rules (and Why They Work)</h1>
+
+  <section>
+    <h2>Definition of a Log</h2>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>a</mi></msub>
+          <mo>(</mo><mi>x</mi><mo>)</mo>
+          <mo>=</mo><mi>y</mi>
+          <mtext>&#xA0;means&#xA0;</mtext>
+          <msup><mi>a</mi><mi>y</mi></msup>
+          <mo>=</mo><mi>x</mi>
+        </mrow>
+      </math>
+    </div>
+
+    <p class="note"><strong>Conditions (real logs):</strong></p>
+    <ul>
+      <li>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow><mi>a</mi><mo>&gt;</mo><mn>0</mn></mrow>
+        </math>
+        and
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow><mi>a</mi><mo>&#x2260;</mo><mn>1</mn></mrow>
+        </math>
+        (the base)
+      </li>
+      <li>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow><mi>x</mi><mo>&gt;</mo><mn>0</mn></mrow>
+        </math>
+        (the input)
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>1) Product Rule</h2>
+
+    <h3>Rule</h3>
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>a</mi></msub>
+          <mo>(</mo><mi>M</mi><mo>&#x22C5;</mo><mi>N</mi><mo>)</mo>
+          <mo>=</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+          <mo>+</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>N</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+
+    <h3>Why it works</h3>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Let&#xA0;</mtext>
+          <mi>p</mi><mo>=</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+          <mtext>&#xA0;so&#xA0;</mtext>
+          <msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><mi>M</mi>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>and&#xA0;</mtext>
+          <mi>q</mi><mo>=</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>N</mi><mo>)</mo>
+          <mtext>&#xA0;so&#xA0;</mtext>
+          <msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><mi>N</mi>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Then&#xA0;</mtext>
+          <mi>M</mi><mo>&#x22C5;</mo><mi>N</mi>
+          <mo>=</mo>
+          <msup><mi>a</mi><mi>p</mi></msup><mo>&#x22C5;</mo><msup><mi>a</mi><mi>q</mi></msup>
+          <mo>=</mo>
+          <msup><mi>a</mi><mrow><mi>p</mi><mo>+</mo><mi>q</mi></mrow></msup>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>So the power needed is&#xA0;</mtext>
+          <mi>p</mi><mo>+</mo><mi>q</mi><mo>,</mo>
+          <mtext>&#xA0;meaning&#xA0;</mtext>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>&#x22C5;</mo><mi>N</mi><mo>)</mo>
+          <mo>=</mo><mi>p</mi><mo>+</mo><mi>q</mi>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mo>=</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+          <mo>+</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>N</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+  </section>
+
+  <section>
+    <h2>2) Quotient Rule</h2>
+
+    <h3>Rule</h3>
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>a</mi></msub>
+          <mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo>
+          <mo>=</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+          <mo>-</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>N</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+
+    <h3>Why it works</h3>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Let&#xA0;</mtext>
+          <mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+          <mtext>&#xA0;so&#xA0;</mtext><msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><mi>M</mi>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>and&#xA0;</mtext>
+          <mi>q</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>N</mi><mo>)</mo>
+          <mtext>&#xA0;so&#xA0;</mtext><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><mi>N</mi>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Then&#xA0;</mtext>
+          <mfrac><mi>M</mi><mi>N</mi></mfrac>
+          <mo>=</mo>
+          <mfrac><msup><mi>a</mi><mi>p</mi></msup><msup><mi>a</mi><mi>q</mi></msup></mfrac>
+          <mo>=</mo>
+          <msup><mi>a</mi><mrow><mi>p</mi><mo>-</mo><mi>q</mi></mrow></msup>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>So&#xA0;</mtext>
+          <msub><mi>log</mi><mi>a</mi></msub>
+          <mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo>
+          <mo>=</mo><mi>p</mi><mo>-</mo><mi>q</mi>
+          <mo>=</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+          <mo>-</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>N</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+  </section>
+
+  <section>
+    <h2>3) Power Rule</h2>
+
+    <h3>Rule</h3>
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>a</mi></msub>
+          <mo>(</mo><msup><mi>M</mi><mi>k</mi></msup><mo>)</mo>
+          <mo>=</mo>
+          <mi>k</mi>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+
+    <h3>Why it works</h3>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Let&#xA0;</mtext>
+          <mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+          <mtext>&#xA0;so&#xA0;</mtext>
+          <msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><mi>M</mi>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Raise both sides to&#xA0;</mtext><mi>k</mi><mo>:</mo>
+          <mspace width="0.6em"/>
+          <msup><mi>M</mi><mi>k</mi></msup>
+          <mo>=</mo>
+          <msup>
+            <mrow><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo></mrow>
+            <mi>k</mi>
+          </msup>
+          <mo>=</mo>
+          <msup><mi>a</mi><mrow><mi>p</mi><mo>&#x22C5;</mo><mi>k</mi></mrow></msup>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>So the required exponent is&#xA0;</mtext><mi>p</mi><mo>&#x22C5;</mo><mi>k</mi><mo>,</mo>
+          <mtext>&#xA0;meaning&#xA0;</mtext>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>M</mi><mi>k</mi></msup><mo>)</mo>
+          <mo>=</mo><mi>k</mi><mo>&#x22C5;</mo><mi>p</mi>
+          <mo>=</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+  </section>
+
+  <section>
+    <h2>4) Change of Base Rule</h2>
+
+    <h3>Rule</h3>
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo>
+          <mo>=</mo>
+          <mfrac>
+            <mrow><msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow>
+            <mrow><msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>a</mi><mo>)</mo></mrow>
+          </mfrac>
+        </mrow>
+      </math>
+    </div>
+
+    <p class="note">
+      This is used because calculators usually have <code>log</code> (base 10) and/or <code>ln</code> (base <em>e</em>),
+      but not every base button.
+    </p>
+
+    <h3>Why it works</h3>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Let&#xA0;</mtext>
+          <mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo>
+          <mtext>&#xA0;so&#xA0;</mtext>
+          <msup><mi>a</mi><mi>y</mi></msup><mo>=</mo><mi>x</mi>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Take&#xA0;</mtext><msub><mi>log</mi><mi>b</mi></msub><mtext>&#xA0;of both sides:</mtext>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>b</mi></msub>
+          <mo>(</mo><msup><mi>a</mi><mi>y</mi></msup><mo>)</mo>
+          <mo>=</mo>
+          <msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Use the power rule on the left:</mtext>
+          <mspace width="0.8em"/>
+          <mi>y</mi><mo>&#x22C5;</mo><msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>a</mi><mo>)</mo>
+          <mo>=</mo>
+          <msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>Solve for&#xA0;</mtext><mi>y</mi><mo>:</mo>
+          <mspace width="0.8em"/>
+          <mi>y</mi>
+          <mo>=</mo>
+          <mfrac>
+            <mrow><msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow>
+            <mrow><msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>a</mi><mo>)</mo></mrow>
+          </mfrac>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtext>But&#xA0;</mtext>
+          <mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo>
+          <mtext>, so:</mtext>
+          <mspace width="0.8em"/>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo>
+          <mo>=</mo>
+          <mfrac>
+            <mrow><msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow>
+            <mrow><msub><mi>log</mi><mi>b</mi></msub><mo>(</mo><mi>a</mi><mo>)</mo></mrow>
+          </mfrac>
+        </mrow>
+      </math>
+    </div>
+  </section>
+
+  <section>
+    <h2>Two Handy Facts (from the definition)</h2>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn>
+          <mtext>&#xA0;because&#xA0;</mtext>
+          <msup><mi>a</mi><mn>0</mn></msup><mo>=</mo><mn>1</mn>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>1</mn>
+          <mtext>&#xA0;because&#xA0;</mtext>
+          <msup><mi>a</mi><mn>1</mn></msup><mo>=</mo><mi>a</mi>
+        </mrow>
+      </math>
+    </div>
+  </section>
+
+  <section>
+    <h2>One Big “Don’t”</h2>
+    <p>
+      Logs do <strong>not</strong> split across addition or subtraction:
+    </p>
+    <div class="mathline">
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>+</mo><mi>N</mi><mo>)</mo>
+          <mo>&#x2260;</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>M</mi><mo>)</mo>
+          <mo>+</mo>
+          <msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mi>N</mi><mo>)</mo>
+        </mrow>
+      </math>
+    </div>
+    <p class="note">
+      The reason: the exponent rules give you identities for multiplying/dividing powers, not for adding them.
+    </p>
+  </section>
+
+</body>
+</html>`;
+
+  function ensureLogicIframe(){
+    const box = document.getElementById('logicHtml');
+    if(box.dataset.loaded === '1') return;
+    box.innerHTML = `
+      <iframe id="logicFrame"
+        title="Logarithm Rules (and Why They Work)"
+        style="width:100%;height:650px;border:1px solid rgba(106,92,255,.25);border-radius:12px;background:#fff;display:block"
+        loading="lazy"
+        sandbox>
+      </iframe>
+    `;
+    const fr = document.getElementById('logicFrame');
+    fr.srcdoc = LOGIC_MATHML_DOC;
+    box.dataset.loaded = '1';
+  }
+
+  /* ========= Canvas drawing ========= */
+  const canvas = document.getElementById('graphCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvasForDPR(){
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth;
+    const cssH = canvas.clientHeight;
+    if(cssW <= 0 || cssH <= 0) return false;
+
+    const wantW = Math.round(cssW * dpr);
+    const wantH = Math.round(cssH * dpr);
+    if(canvas.width !== wantW || canvas.height !== wantH){
+      canvas.width = wantW;
+      canvas.height = wantH;
+    }
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    return true;
+  }
+
+  function niceStep(range){
+    const r = Math.max(range, 1e-9);
+    const rough = r / 7;
+    const pow10 = Math.pow(10, Math.floor(Math.log10(rough)));
+    const scaled = rough / pow10;
+    let step;
+    if(scaled <= 1) step=1;
+    else if(scaled <= 2) step=2;
+    else if(scaled <= 5) step=5;
+    else step=10;
+    return step * pow10;
+  }
+
+  function drawAxes({W,H,m,xMin,xMax,yMin,yMax,xLabel,yLabel}){
+    const plotW = W - m.l - m.r;
+    const plotH = H - m.t - m.b;
+
+    const xToPx = x => m.l + (x - xMin) / (xMax - xMin) * plotW;
+    const yToPy = y => m.t + (yMax - y) / (yMax - yMin) * plotH;
+
+    ctx.fillStyle='rgba(255,255,255,0.86)';
+    ctx.fillRect(m.l,m.t,plotW,plotH);
+
+    const xStep = niceStep(xMax - xMin);
+    const yStep = niceStep(yMax - yMin);
+
+    ctx.lineWidth=1;
+    ctx.strokeStyle='rgba(15,23,42,0.08)';
+
+    const xStart = Math.ceil(xMin/xStep)*xStep;
+    for(let x=xStart; x<=xMax+1e-9; x+=xStep){
+      const px = xToPx(x);
+      ctx.beginPath(); ctx.moveTo(px,m.t); ctx.lineTo(px,m.t+plotH); ctx.stroke();
+    }
+    const yStart = Math.ceil(yMin/yStep)*yStep;
+    for(let y=yStart; y<=yMax+1e-9; y+=yStep){
+      const py = yToPy(y);
+      ctx.beginPath(); ctx.moveTo(m.l,py); ctx.lineTo(m.l+plotW,py); ctx.stroke();
+    }
+
+    const xAxisY = (0>=yMin && 0<=yMax) ? yToPy(0) : yToPy(yMin);
+    const yAxisX = (0>=xMin && 0<=xMax) ? xToPx(0) : xToPx(xMin);
+
+    ctx.strokeStyle='rgba(15,23,42,0.45)';
+    ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(m.l,xAxisY); ctx.lineTo(m.l+plotW,xAxisY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(yAxisX,m.t); ctx.lineTo(yAxisX,m.t+plotH); ctx.stroke();
+
+    ctx.fillStyle='rgba(15,23,42,0.78)';
+    ctx.font='12px system-ui,-apple-system,Segoe UI,Roboto,Arial';
+
+    ctx.textAlign='center';
+    ctx.textBaseline='top';
+    for(let x=xStart; x<=xMax+1e-9; x+=xStep){
+      const px=xToPx(x);
+      ctx.strokeStyle='rgba(15,23,42,0.30)';
+      ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.moveTo(px,xAxisY-5); ctx.lineTo(px,xAxisY+5); ctx.stroke();
+      ctx.fillText(String(roundN(x,2)), px, xAxisY+10);
+    }
+
+    ctx.textAlign='right';
+    ctx.textBaseline='middle';
+    for(let y=yStart; y<=yMax+1e-9; y+=yStep){
+      const py=yToPy(y);
+      ctx.strokeStyle='rgba(15,23,42,0.30)';
+      ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.moveTo(yAxisX-5,py); ctx.lineTo(yAxisX+5,py); ctx.stroke();
+      ctx.fillText(String(roundN(y,2)), yAxisX-10, py);
+    }
+
+    ctx.fillStyle='rgba(15,23,42,0.82)';
+    ctx.font='13px system-ui,-apple-system,Segoe UI,Roboto,Arial';
+    ctx.textAlign='right';
+    ctx.textBaseline='bottom';
+    ctx.fillText(xLabel, m.l+plotW, m.t+plotH+34);
+
+    ctx.save();
+    ctx.translate(m.l-38, m.t);
+    ctx.rotate(-Math.PI/2);
+    ctx.textAlign='left';
+    ctx.textBaseline='top';
+    ctx.fillText(yLabel, 0, 0);
+    ctx.restore();
+
+    ctx.strokeStyle='rgba(106,92,255,0.22)';
+    ctx.lineWidth=2;
+    ctx.strokeRect(m.l,m.t,plotW,plotH);
+
+    return {xToPx,yToPy,m,plotW,plotH};
+  }
+
+  function drawPoint(px,py,label,color){
+    ctx.fillStyle=color || 'rgba(106,92,255,0.95)';
+    ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fill();
+    if(label){
+      ctx.fillStyle='rgba(15,23,42,0.88)';
+      ctx.font='12px system-ui,-apple-system,Segoe UI,Roboto,Arial';
+      ctx.textAlign='left';
+      ctx.textBaseline='bottom';
+      ctx.fillText(label, px+10, py-8);
+    }
+  }
+
+  function drawLogCurve(base, showAfterCheck){
+    if(!resizeCanvasForDPR()) return;
+    const W = canvas.clientWidth, H = canvas.clientHeight;
+    ctx.clearRect(0,0,W,H);
+
+    const xMin = 0.1;
+    const xMax = Math.max(12, base*3);
+
+    let yMin=Infinity, yMax=-Infinity;
+    const samples=600;
+    for(let i=0;i<=samples;i++){
+      const x = xMin + (xMax-xMin)*(i/samples);
+      const y = logBase(x, base);
+      yMin=Math.min(yMin,y); yMax=Math.max(yMax,y);
+    }
+    yMin = Math.min(yMin,-2);
+    yMax = Math.max(yMax, 2);
+    const pad=0.12, range=Math.max(1e-6,yMax-yMin);
+    yMin -= pad*range; yMax += pad*range;
+
+    const m={l:58,r:18,t:18,b:44};
+    const ax = drawAxes({W,H,m,xMin,xMax,yMin,yMax,xLabel:'x',yLabel:'y'});
+    const {xToPx,yToPy} = ax;
+
+    ctx.strokeStyle='#1f2a44';
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    for(let i=0;i<=samples;i++){
+      const x = xMin + (xMax-xMin)*(i/samples);
+      const y = logBase(x, base);
+      const px=xToPx(x), py=yToPy(y);
+      if(i===0) ctx.moveTo(px,py);
+      else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+
+    drawPoint(xToPx(1), yToPy(0), '(1,0)');
+    drawPoint(xToPx(base), yToPy(1), `(${baseLabel(base)},1)`, 'rgba(0,163,214,0.95)');
+
+    ctx.fillStyle='rgba(15,23,42,0.85)';
+    ctx.font='13px system-ui,-apple-system,Segoe UI,Roboto,Arial';
+    ctx.textAlign='right';
+    ctx.textBaseline='top';
+    ctx.fillText(isE(base)?'y = ln(x)':`y = log_${baseLabel(base)}(x)`, W-m.r-8, m.t+6);
+
+    if(showAfterCheck){
+      ctx.fillStyle='rgba(0,163,214,0.95)';
+      ctx.textAlign='left';
+      ctx.textBaseline='top';
+      ctx.fillText('Key fact: log_b(b) = 1 and log_b(1) = 0', m.l+8, m.t+6);
+    }
+  }
+
+  function drawDbCurve(showAfterCheck){
+    if(!resizeCanvasForDPR()) return;
+    const W = canvas.clientWidth, H = canvas.clientHeight;
+    ctx.clearRect(0,0,W,H);
+
+    const xMin=0.1, xMax=50;
+    const f = (r)=>10*log10(r);
+
+    let yMin=f(xMin), yMax=f(xMax);
+    yMin = Math.min(yMin,-30); yMax = Math.max(yMax,30);
+    const pad=0.12, range=Math.max(1e-6,yMax-yMin);
+    yMin -= pad*range; yMax += pad*range;
+
+    const m={l:58,r:18,t:18,b:44};
+    const ax = drawAxes({W,H,m,xMin,xMax,yMin,yMax,xLabel:'ratio (P₂/P₁)',yLabel:'ΔL (dB)'});
+    const {xToPx,yToPy} = ax;
+
+    ctx.strokeStyle='#1f2a44';
+    ctx.lineWidth=3;
+    const samples=600;
+    ctx.beginPath();
+    for(let i=0;i<=samples;i++){
+      const x=xMin+(xMax-xMin)*(i/samples);
+      const y=f(x);
+      const px=xToPx(x), py=yToPy(y);
+      if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+
+    drawPoint(xToPx(1), yToPy(0), '(1,0 dB)');
+    drawPoint(xToPx(10), yToPy(10), '(10,10 dB)', 'rgba(0,163,214,0.95)');
+
+    ctx.fillStyle='rgba(15,23,42,0.85)';
+    ctx.font='13px system-ui,-apple-system,Segoe UI,Roboto,Arial';
+    ctx.textAlign='right';
+    ctx.textBaseline='top';
+    ctx.fillText('ΔL = 10 log₁₀(ratio)', W-m.r-8, m.t+6);
+
+    if(showAfterCheck){
+      ctx.fillStyle='rgba(0,163,214,0.95)';
+      ctx.textAlign='left';
+      ctx.textBaseline='top';
+      ctx.fillText('ratio < 1 → negative dB', m.l+8, m.t+6);
+    }
+  }
+
+  function drawLnLine(showAfterCheck){
+    if(!resizeCanvasForDPR()) return;
+    const W = canvas.clientWidth, H = canvas.clientHeight;
+    ctx.clearRect(0,0,W,H);
+
+    const xMin=0, xMax=10, yMin=-1, yMax=3;
+    const m={l:58,r:18,t:18,b:44};
+    const ax = drawAxes({W,H,m,xMin,xMax,yMin,yMax,xLabel:'t',yLabel:'ln(y)'});
+    const {xToPx,yToPy} = ax;
+
+    ctx.strokeStyle='#1f2a44';
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    ctx.moveTo(xToPx(1), yToPy(-0.2));
+    ctx.lineTo(xToPx(9), yToPy(2.4));
+    ctx.stroke();
+
+    drawPoint(xToPx(2), yToPy(0.2), 'Point 1');
+    drawPoint(xToPx(8), yToPy(2.0), 'Point 2', 'rgba(0,163,214,0.95)');
+
+    ctx.fillStyle='rgba(15,23,42,0.85)';
+    ctx.font='13px system-ui,-apple-system,Segoe UI,Roboto,Arial';
+    ctx.textAlign='right';
+    ctx.textBaseline='top';
+    ctx.fillText('ln(y) = ln(y₀) + kt', W-m.r-8, m.t+6);
+
+    if(showAfterCheck){
+      ctx.fillStyle='rgba(0,163,214,0.95)';
+      ctx.textAlign='left';
+      ctx.textBaseline='top';
+      ctx.fillText('Slope = k', m.l+8, m.t+6);
+    }
+  }
+
+  function drawGraph(q, showAfterCheck){
+    const g = q.graph || {type:'log', base:10};
+    if(g.type==='db') return drawDbCurve(!!showAfterCheck);
+    if(g.type==='lnline') return drawLnLine(!!showAfterCheck);
+    return drawLogCurve(g.base || 10, !!showAfterCheck);
+  }
+
+  window.addEventListener('resize', ()=>{ if(currentQ) drawGraph(currentQ,false); });
+
+  /* ========= Question generation ========= */
+  function makeTable(rows){
+    return `
+      <table class="miniTable" aria-label="Given values">
+        <thead><tr><th>Given</th><th>Value</th></tr></thead>
+        <tbody>${rows.map(r=>`<tr><td>${r.left}</td><td><strong>${r.right}</strong></td></tr>`).join('')}</tbody>
+      </table>
+    `;
+  }
+
+  const PRIMES = [2,3,5,7];
+
+  function qProductRuleOnly(){
+    const base = (Math.random()<0.75) ? 10 : Math.E;
+    const sym = logTex(base);
+
+    const [p,q] = PRIMES.slice().sort(()=>Math.random()-0.5).slice(0,2);
+
+    const vp = roundN(logBase(p, base), 4);
+    const vq = roundN(logBase(q, base), 4);
+
+    const expected = vp + vq;
+
+    return {
+      subtype:'product',
+      title:'Product rule (only)',
+      qMeta:'Use log(MN) = log(M) + log(N).',
+      statementHTML: `
+        Use the table values to evaluate:
+        \\[
+          ${sym}\\left(${p}\\cdot ${q}\\right)
+        \\]
+        <span style="color:#55607a">Answer to <strong>2 dp</strong>.</span>
+      `,
+      hintHTML: `
+        Apply the <strong>product rule</strong>:
+        \\[
+          ${sym}(MN)=${sym}(M)+${sym}(N)
+        \\]
+        Then use the provided table values and round to 2 dp.
+      `,
+      whyHTML: `<ul><li>This isolates the product rule so you practise it cleanly.</li></ul>`,
+      auxTableHTML: makeTable([
+        {left:`\\(${sym}(${p})\\)`, right: vp.toFixed(4)},
+        {left:`\\(${sym}(${q})\\)`, right: vq.toFixed(4)}
+      ]),
+      expected,
+      unitOut:'—',
+      graph:{type:'log', base},
+      chips:{leftLbl:'Rule', leftVal:'Product', midLbl:'Use', midVal:'table values', rightLbl:'Round', rightVal:'2 dp'}
+    };
+  }
+
+  function qQuotientRuleOnly(){
+    const base = (Math.random()<0.75) ? 10 : Math.E;
+    const sym = logTex(base);
+
+    const [p,q] = PRIMES.slice().sort(()=>Math.random()-0.5).slice(0,2);
+
+    const vp = roundN(logBase(p, base), 4);
+    const vq = roundN(logBase(q, base), 4);
+
+    const expected = vp - vq;
+
+    return {
+      subtype:'quotient',
+      title:'Quotient rule (only)',
+      qMeta:'Use log(M/N) = log(M) − log(N).',
+      statementHTML: `
+        Use the table values to evaluate:
+        \\[
+          ${sym}\\left(\\frac{${p}}{${q}}\\right)
+        \\]
+        <span style="color:#55607a">Answer to <strong>2 dp</strong>.</span>
+      `,
+      hintHTML: `
+        Apply the <strong>quotient rule</strong>:
+        \\[
+          ${sym}\\left(\\frac{M}{N}\\right)=${sym}(M)-${sym}(N)
+        \\]
+        Then use the provided table values and round to 2 dp.
+      `,
+      whyHTML: `<ul><li>This isolates the quotient rule (common in ratios and scaling).</li></ul>`,
+      auxTableHTML: makeTable([
+        {left:`\\(${sym}(${p})\\)`, right: vp.toFixed(4)},
+        {left:`\\(${sym}(${q})\\)`, right: vq.toFixed(4)}
+      ]),
+      expected,
+      unitOut:'—',
+      graph:{type:'log', base},
+      chips:{leftLbl:'Rule', leftVal:'Quotient', midLbl:'Use', midVal:'table values', rightLbl:'Round', rightVal:'2 dp'}
+    };
+  }
+
+  function qPowerRuleOnly(){
+    const base = (Math.random()<0.75) ? 10 : Math.E;
+    const sym = logTex(base);
+
+    const p = pick(PRIMES);
+    const k = rndInt(2,4);
+
+    const vp = roundN(logBase(p, base), 4);
+    const expected = k * vp;
+
+    return {
+      subtype:'power',
+      title:'Power rule (only)',
+      qMeta:'Use log(M^k) = k log(M).',
+      statementHTML: `
+        Use the table value to evaluate:
+        \\[
+          ${sym}\\left(${p}^{${k}}\\right)
+        \\]
+        <span style="color:#55607a">Answer to <strong>2 dp</strong>.</span>
+      `,
+      hintHTML: `
+        Apply the <strong>power rule</strong>:
+        \\[
+          ${sym}(M^k)=k\\,${sym}(M)
+        \\]
+        Then use the provided table value and round to 2 dp.
+      `,
+      whyHTML: `<ul><li>This isolates the power rule (used constantly in engineering maths).</li></ul>`,
+      auxTableHTML: makeTable([{left:`\\(${sym}(${p})\\)`, right: vp.toFixed(4)}]),
+      expected,
+      unitOut:'—',
+      graph:{type:'log', base},
+      chips:{leftLbl:'Rule', leftVal:'Power', midLbl:'Exponent', midVal:String(k), rightLbl:'Round', rightVal:'2 dp'}
+    };
+  }
+
+  function qLogLawsGiven(){
+    const base = (Math.random()<0.75) ? 10 : Math.E;
+    const sym = logTex(base);
+
+    const kCount = pick([2,3]);
+    const chosen = PRIMES.slice().sort(()=>Math.random()-0.5).slice(0,kCount);
+
+    const terms = chosen.map(p=>({
+      p,
+      e: rndInt(1,3),
+      sign: (Math.random()<0.35 ? -1 : 1)
+    }));
+    if(!terms.some(t=>t.sign>0)) terms[0].sign = 1;
+
+    const givens = chosen.map(p=>{
+      const v = roundN(logBase(p, base), 4);
+      return {p, v, left:`\\(${sym}(${p})\\)`, right:v.toFixed(4)};
+    });
+
+    const num = terms.filter(t=>t.sign>0);
+    const den = terms.filter(t=>t.sign<0);
+
+    const powTex = (p,e)=> e===1 ? `${p}` : `${p}^{${e}}`;
+    const numTex = num.length ? num.map(t=>powTex(t.p,t.e)).join('\\,') : '1';
+    const denTex = den.length ? den.map(t=>powTex(t.p,t.e)).join('\\,') : '';
+    const argTex = denTex ? `\\frac{${numTex}}{${denTex}}` : `${numTex}`;
+
+    let expected = 0;
+    for(const t of terms){
+      const g = givens.find(z=>z.p===t.p);
+      expected += (t.sign * t.e) * g.v;
+    }
+
+    return {
+      subtype:'laws',
+      title:'Log laws (mixed)',
+      qMeta:'Combine product/quotient/power rules using the table.',
+      statementHTML: `
+        Use the table values to evaluate:
+        \\[
+          ${sym}\\left(${argTex}\\right)
+        \\]
+        <span style="color:#55607a">Answer to <strong>2 dp</strong>.</span>
+      `,
+      hintHTML: `
+        Break the inside into a product/quotient of powers, combine using the table values, then round to 2 dp.
+      `,
+      whyHTML: `<ul><li>Logs turn products into sums — vital in many engineering calculations.</li></ul>`,
+      auxTableHTML: makeTable(givens.map(g=>({left:g.left, right:g.right}))),
+      expected,
+      unitOut:'—',
+      graph:{type:'log', base},
+      chips:{leftLbl:'Skill', leftVal:'Mixed laws', midLbl:'Base', midVal:isE(base)?'e (ln)':'10', rightLbl:'Round', rightVal:'2 dp'}
+    };
+  }
+
+  function qChangeBase(){
+    const a = pick([2,3,4,5,6,7,8,9,10,12]);
+    let b = rndInt(2,80);
+    if(b===a) b += 1;
+
+    const lnA = roundN(Math.log(a), 4);
+    const lnB = roundN(Math.log(b), 4);
+    const expected = lnB / lnA;
+
+    return {
+      subtype:'changebase',
+      title:'Change of base',
+      qMeta:'Compute a log in an unusual base (ln values provided).',
+      statementHTML: `
+        Evaluate:
+        \\[
+          \\log_{${a}}(${b})
+        \\]
+        using change of base. Answer to <strong>2 dp</strong>.
+      `,
+      hintHTML: `
+        Use:
+        \\[
+          \\log_{a}(b)=\\frac{\\ln(b)}{\\ln(a)}
+        \\]
+        where \\(\\ln\\) means \\(\\log_e\\). Use the provided \\(\\ln\\) values, then divide and round to 2 dp.
+      `,
+      whyHTML: `<ul><li>Change of base lets you compute any logarithm using \\(\\ln\\).</li></ul>`,
+      auxTableHTML: makeTable([
+        {left:`\\(\\ln(${a})\\)`, right: lnA.toFixed(4)},
+        {left:`\\(\\ln(${b})\\)`, right: lnB.toFixed(4)}
+      ]),
+      expected,
+      unitOut:'—',
+      graph:{type:'log', base:a},
+      chips:{leftLbl:'Method', leftVal:'Change of base', midLbl:'Compute', midVal:`log_${a}(${b})`, rightLbl:'Given', rightVal:'ln values'}
+    };
+  }
+
+  function qDb(){
+    const P1 = roundN(rndInt(2,200)/10, 1);
+    const P2 = roundN(rndInt(2,500)/10, 1);
+    const ratio = P2 / P1;
+
+    const ratioShown = roundN(ratio, 4);
+    const logR = roundN(log10(ratio), 4);
+    const expected = 10 * logR;
+
+    return {
+      subtype:'db',
+      title:'Engineering: Decibels (dB)',
+      qMeta:'Use ΔL = 10 log₁₀(P₂/P₁) (log value provided).',
+      statementHTML: `
+        Power changes from \\(P_1=${P1}\\,\\text{W}\\) to \\(P_2=${P2}\\,\\text{W}\\).
+        <br><br>
+        Compute:
+        \\[
+          \\Delta L = 10\\log_{10}\\left(\\frac{P_2}{P_1}\\right)
+        \\]
+        Answer to <strong>2 dp</strong>.
+      `,
+      hintHTML: `
+        1) Ratio \\(r=P_2/P_1\\)<br>
+        2) Use the provided \\(\\log_{10}(r)\\)<br>
+        3) Compute \\(\\Delta L = 10\\log_{10}(r)\\) and round to 2 dp
+      `,
+      whyHTML: `<ul><li>dB turns multiplication into addition: gains in series add.</li></ul>`,
+      auxTableHTML: makeTable([
+        {left:`\\(r=\\frac{P_2}{P_1}\\)`, right: ratioShown.toFixed(4)},
+        {left:`\\(\\log_{10}(r)\\)`, right: logR.toFixed(4)}
+      ]),
+      expected,
+      unitOut:'dB',
+      graph:{type:'db'},
+      chips:{leftLbl:'Topic', leftVal:'dB', midLbl:'Given', midVal:'log₁₀(r)', rightLbl:'Round', rightVal:'2 dp'}
+    };
+  }
+
+  function qPH(){
+    const m = roundN(rndInt(10,99)/10, 1);
+    const n = rndInt(2,8);
+
+    const logm = roundN(log10(m), 4);
+    const expected = n - logm;
+
+    return {
+      subtype:'ph',
+      title:'pH calculation (log scale)',
+      qMeta:'Use pH = −log₁₀([H⁺]) (log value provided).',
+      statementHTML: `
+        Hydrogen ion concentration is:
+        \\[
+          [\\mathrm{H}^+] = ${m}\\times 10^{-${n}}\\;\\text{mol/L}
+        \\]
+        Compute:
+        \\[
+          \\text{pH} = -\\log_{10}([\\mathrm{H}^+])
+        \\]
+        Answer to <strong>2 dp</strong>.
+      `,
+      hintHTML: `
+        Use:
+        \\[
+          \\log_{10}(m\\cdot 10^{-n}) = \\log_{10}(m) - n
+        \\]
+        so:
+        \\[
+          \\text{pH} = n - \\log_{10}(m)
+        \\]
+        Use the provided \\(\\log_{10}(m)\\) then round to 2 dp.
+      `,
+      whyHTML: `<ul><li>Great practice with powers of 10 and log rules.</li></ul>`,
+      auxTableHTML: makeTable([{left:`\\(\\log_{10}(${m})\\)`, right: logm.toFixed(4)}]),
+      expected,
+      unitOut:'pH',
+      graph:{type:'log', base:10},
+      chips:{leftLbl:'Topic', leftVal:'pH', midLbl:'Given', midVal:'log₁₀(m)', rightLbl:'Round', rightVal:'2 dp'}
+    };
+  }
+
+  function qExpK(){
+    const y0 = rndInt(60, 240);
+    const t  = rndInt(2, 12);
+    const kTrue = rndInt(-40,40)/100;
+    const y = roundN(y0 * Math.exp(kTrue * t), 1);
+
+    const ratio = y / y0;
+    const lnRatio = roundN(Math.log(ratio), 4);
+    const expected = lnRatio / t;
+
+    return {
+      subtype:'expk',
+      title:'Exponential model (use ln)',
+      qMeta:'Solve for k using logs (ln value provided).',
+      statementHTML: `
+        A process follows:
+        \\[
+          y(t)=y_0 e^{kt}
+        \\]
+        Given \\(y_0=${y0}\\) at \\(t=0\\), and \\(y=${y}\\) at \\(t=${t}\\,\\text{min}\\),
+        find \\(k\\) in \\(\\text{min}^{-1}\\).
+        <br><span style="color:#55607a">Answer to <strong>2 dp</strong>.</span>
+      `,
+      hintHTML: `
+        Divide by \\(y_0\\):
+        \\[
+          \\frac{y}{y_0}=e^{kt}
+        \\]
+        Take \\(\\ln\\) (meaning \\(\\log_e\\)):
+        \\[
+          \\ln\\left(\\frac{y}{y_0}\\right)=kt
+        \\]
+        so:
+        \\[
+          k=\\frac{1}{t}\\ln\\left(\\frac{y}{y_0}\\right)
+        \\]
+        Use the provided \\(\\ln(y/y_0)\\) then divide by \\(t\\) and round to 2 dp.
+      `,
+      whyHTML: `<ul><li>Logs linearise exponentials and extract rate constants from measurements.</li></ul>`,
+      auxTableHTML: makeTable([{left:`\\(\\ln(\\frac{y}{y_0})\\)`, right: lnRatio.toFixed(4)}]),
+      expected,
+      unitOut:'min⁻¹',
+      graph:{type:'lnline'},
+      chips:{leftLbl:'Topic', leftVal:'Exponential', midLbl:'Given', midVal:'ln(y/y₀)', rightLbl:'Round', rightVal:'2 dp'}
+    };
+  }
+
+  function qEvaluateLog(){
+    const baseOptions = [2,3,5,10,Math.E];
+    const base = pick(baseOptions);
+
+    let kMin=-4, kMax=5;
+    if(base===5) kMax=4;
+    if(base===10) {kMin=-4; kMax=4;}
+    if(isE(base)) {kMin=-3; kMax=3;}
+
+    let k = rndInt(kMin, kMax);
+
+    const sym = logTex(base);
+    let argTex = '';
+    if(isE(base)){
+      argTex = (k===0) ? '1' : `e^{${k}}`;
+    }else if(base===10){
+      argTex = (k===0) ? '1' : `10^{${k}}`;
+    }else{
+      if(k>=0){
+        const val = Math.pow(base, k);
+        argTex = String(val);
+      }else{
+        const val = Math.pow(base, -k);
+        argTex = `\\frac{1}{${val}}`;
+      }
+    }
+
+    const expected = k;
+
+    return {
+      subtype:'eval',
+      title:'Evaluate a logarithm (no laws needed)',
+      qMeta:'Use the definition: log_b(b^k)=k (no calculator).',
+      statementHTML: `
+        Evaluate:
+        \\[
+          ${sym}\\left(${argTex}\\right)
+        \\]
+        Answer to <strong>2 dp</strong>.
+      `,
+      hintHTML: `
+        Use the key fact:
+        \\[
+          \\log_b(b^k)=k
+        \\]
+        Also remember:
+        \\[
+          \\log_b(1)=0,\\quad \\log_b(b)=1
+        \\]
+        (and \\(\\ln(x)=\\log_e(x)\\)).
+      `,
+      whyHTML: `<ul><li>Builds fluency with the meaning of logs and special values (0 and 1 cases).</li></ul>`,
+      expected,
+      unitOut:'—',
+      graph:{type:'log', base: isE(base)?Math.E: (base===10?10:base)},
+      chips:{leftLbl:'Type', leftVal:'Evaluate', midLbl:'Base', midVal:isE(base)?'e (ln)':String(base), rightLbl:'Key', rightVal:'log_b(b^k)=k'}
+    };
+  }
+
+  /* ===== Solve-for-x (now includes mixed rules AND provides log values) ===== */
+
+  function pickNiceL(base){
+    if(base===10) return rndInt(-2, 3);
+    if(base===2) return rndInt(0, 8);
+    if(base===3) return rndInt(0, 6);
+    if(base===5) return rndInt(0, 6);
+    return rndInt(0, 6);
+  }
+
+  function qSolveXSingleRule(){
+    // Uses one rule: product OR quotient. Gives log(constant) so no calculator.
+    const base = pick([2,3,5,10]);
+    const sym = logTex(base);
+    const c = pick(PRIMES);
+    const L = pickNiceL(base);
+    const x = Math.pow(base, L);
+
+    const logC = roundN(logBase(c, base), 4);
+
+    const type = pick(['product','quotient']);
+    let k, eqTex, hint;
+
+    if(type==='product'){
+      // log_b(c x) = k => log_b(c)+log_b(x)=k
+      // choose k so log_b(x)=L exactly using the provided logC
+      k = roundN(logC + L, 4);
+      eqTex = `${sym}(${c}x) = ${k.toFixed(4)}`;
+      hint = `
+        Apply the product rule:
+        \\[
+          ${sym}(${c}x) = ${sym}(${c}) + ${sym}(x)
+        \\]
+        Use the provided \\(${sym}(${c})\\), so:
+        \\[
+          ${sym}(x) = ${k.toFixed(4)} - ${sym}(${c})
+        \\]
+        Then convert \\(${sym}(x)=y\\) to exponential form \\(x=${baseLabel(base)}^y\\).
+      `;
+    }else{
+      // log_b(x/c) = k => log_b(x)-log_b(c)=k
+      // choose k so log_b(x)=L exactly
+      k = roundN(L - logC, 4);
+      eqTex = `${sym}\\left(\\frac{x}{${c}}\\right) = ${k.toFixed(4)}`;
+      hint = `
+        Apply the quotient rule:
+        \\[
+          ${sym}\\left(\\frac{x}{${c}}\\right) = ${sym}(x) - ${sym}(${c})
+        \\]
+        Use the provided \\(${sym}(${c})\\), so:
+        \\[
+          ${sym}(x) = ${k.toFixed(4)} + ${sym}(${c})
+        \\]
+        Then convert \\(${sym}(x)=y\\) to exponential form \\(x=${baseLabel(base)}^y\\).
+      `;
+    }
+
+    return {
+      subtype:'solve',
+      title:'Solve for x (uses a log law)',
+      qMeta:'Use product OR quotient rule (log value provided) to isolate log(x).',
+      statementHTML: `
+        Solve for \\(x\\):
+        \\[
+          ${eqTex}
+        \\]
+        Give \\(x\\) to <strong>2 dp</strong>.
+      `,
+      hintHTML: hint,
+      whyHTML: `<ul><li>Practises rearranging log equations using log laws before converting to exponential form.</li></ul>`,
+      auxTableHTML: makeTable([{left:`\\(${sym}(${c})\\)`, right: logC.toFixed(4)}]),
+      expected: x,
+      unitOut:'—',
+      graph:{type:'log', base},
+      chips:{leftLbl:'Solve', leftVal:'x', midLbl:'Rule', midVal:(type==='product'?'Product':'Quotient'), rightLbl:'Given', rightVal:'log(constant)'}
+    };
+  }
+
+  function qSolveXMixedRules(){
+    // Uses product + power + quotient, and gives log values for constants.
+    const base = pick([2,3,5,10]);
+    const sym = logTex(base);
+
+    const c = pick(PRIMES);
+    let d = pick(PRIMES);
+    if(d===c) d = pick(PRIMES);
+
+    const m = rndInt(2,3);
+    const L = pickNiceL(base);
+    const x = Math.pow(base, L);
+
+    const logC = roundN(logBase(c, base), 4);
+    const logD = roundN(logBase(d, base), 4);
+
+    // k chosen so that using provided logs gives log_b(x)=L exactly:
+    // log(c x^m / d)=log(c)+m log(x)-log(d)=k
+    // set k = logC + m*L - logD using SAME rounded values.
+    const k = roundN(logC + m*L - logD, 4);
+
+    return {
+      subtype:'solve',
+      title:'Solve for x (mixed rules)',
+      qMeta:'Use product + quotient + power rules (log values provided) to isolate log(x).',
+      statementHTML: `
+        Solve for \\(x\\):
+        \\[
+          ${sym}\\left(\\frac{${c}x^{${m}}}{${d}}\\right) = ${k.toFixed(4)}
+        \\]
+        Give \\(x\\) to <strong>2 dp</strong>.
+      `,
+      hintHTML: `
+        Apply mixed rules:
+        \\[
+          ${sym}\\left(\\frac{${c}x^{${m}}}{${d}}\\right)
+          = ${sym}(${c}) + ${sym}(x^{${m}}) - ${sym}(${d})
+          = ${sym}(${c}) + ${m}\\,${sym}(x) - ${sym}(${d})
+        \\]
+        Use the provided values for \\(${sym}(${c})\\) and \\(${sym}(${d})\\), then rearrange:
+        \\[
+          ${m}\\,${sym}(x) = ${k.toFixed(4)} - ${sym}(${c}) + ${sym}(${d})
+        \\]
+        So:
+        \\[
+          ${sym}(x)=\\frac{${k.toFixed(4)} - ${sym}(${c}) + ${sym}(${d})}{${m}}
+        \\]
+        Finally convert \\(${sym}(x)=y\\) to exponential form \\(x=${baseLabel(base)}^y\\).
+      `,
+      whyHTML: `<ul><li>This mirrors real problems where you must simplify a log expression before solving.</li></ul>`,
+      auxTableHTML: makeTable([
+        {left:`\\(${sym}(${c})\\)`, right: logC.toFixed(4)},
+        {left:`\\(${sym}(${d})\\)`, right: logD.toFixed(4)}
+      ]),
+      expected: x,
+      unitOut:'—',
+      graph:{type:'log', base},
+      chips:{leftLbl:'Solve', leftVal:'x', midLbl:'Rules', midVal:'Prod+Quot+Power', rightLbl:'Given', rightVal:'log(c), log(d)'}
+    };
+  }
+
+  const ALL_GENS = [
+    qEvaluateLog,
+    qProductRuleOnly, qQuotientRuleOnly, qPowerRuleOnly,
+    qLogLawsGiven, qLogLawsGiven,
+    qChangeBase,
+    qSolveXSingleRule, qSolveXMixedRules, qSolveXSingleRule,
+    qDb, qPH, qExpK,
+    qDb
+  ];
+
+  function buildSet(n){
+    const qs=[];
+
+    // Guarantee: all 3 laws individually + change of base + direct eval + mixed laws + mixed solve + engineering
+    qs.push(qProductRuleOnly());
+    qs.push(qQuotientRuleOnly());
+    qs.push(qPowerRuleOnly());
+    qs.push(qChangeBase());
+    qs.push(qEvaluateLog());
+    qs.push(qLogLawsGiven());
+    qs.push(qSolveXMixedRules()); // guaranteed mixed solve-for-x
+    qs.push(qDb());
+
+    while(qs.length < n){
+      qs.push(pick(ALL_GENS)());
+    }
+
+    for(let i=qs.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [qs[i],qs[j]]=[qs[j],qs[i]];
+    }
+    return qs.slice(0,n);
+  }
+
+  /* ========= App state ========= */
+  let QUESTIONS=[], BATCH=10, idx=0, score=0;
+  let nameStr='Student', mode='timed', timeLeft=0, timerId=null, target=0, correctSoFar=0, unlimited=false;
+  let currentQ=null;
+
+  const el = id=>document.getElementById(id);
+
+  const $qCard=el('qCard');
+  const $endCard=el('endCard');
+  const $qTitle=el('qTitle'), $statement=el('statement'), $hintHtml=el('hintHtml'), $logicHtml=el('logicHtml'), $whyHtml=el('whyHtml');
+  const $progress=el('progress');
+  const $ansVal=el('ansVal'), $unitOut=el('unitOut'), $markAns=el('markAns'), $fbAns=el('fbAns');
+  const $nextBtn=el('nextBtn');
+  const $sumName=el('sumName'), $sumMode=el('sumMode'), $sumScore=el('sumScore'), $sumTime=el('sumTime');
+  const $scoreTopVal=el('scoreTopVal'), $modeTxt=el('modeTxt'), $timeTxt=el('timeTxt');
+
+  function updateTop(){
+    el('whoName').textContent = nameStr || 'Student';
+    $modeTxt.textContent = (mode==='timed') ? 'Timed' : 'Target';
+    $scoreTopVal.textContent = `${score} / ${idx}`;
+    $timeTxt.textContent = (mode==='timed' && !unlimited) ? secsToMMSS(timeLeft) : '—';
+  }
+
+  function startTimer(){
+    if(mode!=='timed' || unlimited) return;
+    clearInterval(timerId);
+    timerId = setInterval(()=>{
+      timeLeft = Math.max(0, timeLeft-1);
+      $timeTxt.textContent = secsToMMSS(timeLeft);
+      if(timeLeft===0){
+        clearInterval(timerId);
+        finish('Time’s up!');
+      }
+    },1000);
+  }
+
+  function finish(message){
+    clearInterval(timerId);
+    $qCard.style.display='none';
+    el('globalHint').style.display='none';
+    $endCard.style.display='block';
+    el('endMsg').textContent = message || 'Well done!';
+
+    $sumName.textContent = nameStr || 'Student';
+    $sumMode.textContent = $modeTxt.textContent;
+    $sumScore.textContent = `${score} / ${idx}`;
+
+    const tlimitRaw = parseInt(document.querySelector('input[name="tlimit"]:checked')?.value || '0', 10);
+    const setTime = (mode==='timed' && !unlimited) ? tlimitRaw : 0;
+    const usedSecs = (mode==='timed' && !unlimited) ? (setTime - timeLeft) : 0;
+    $sumTime.textContent = (mode==='timed' && !unlimited) ? secsToMMSS(usedSecs) : '—';
+  }
+
+  function clearFeedback(){
+    $markAns.textContent='';
+    $markAns.className='marker';
+    $fbAns.textContent='';
+  }
+
+  function progressText(){
+    return (mode==='timed')
+      ? `Question ${idx+1}`
+      : `Question ${idx+1} · Target ${correctSoFar}/${target}`;
+  }
+
+  function setChips(q){
+    const L1=el('chipLeftLbl'), V1=el('chipLeftVal');
+    const L2=el('chipMidLbl'),  V2=el('chipMidVal');
+    const L3=el('chipRightLbl'),V3=el('chipRightVal');
+
+    const c = q.chips || {};
+    L1.textContent = c.leftLbl || 'Base';
+    V1.textContent = c.leftVal || '—';
+    L2.textContent = c.midLbl || 'Task';
+    V2.textContent = c.midVal || '—';
+    L3.textContent = c.rightLbl || 'Note';
+    V3.textContent = c.rightVal || '—';
+  }
+
+  function renderAuxTable(q){
+    const wrap = el('auxTableWrap');
+    if(q.auxTableHTML){
+      wrap.style.display='block';
+      wrap.innerHTML = q.auxTableHTML;
+    }else{
+      wrap.style.display='none';
+      wrap.innerHTML='';
+    }
+  }
+
+  function typesetMath(){
+    if(window.MathJax && typeof window.MathJax.typeset === 'function'){
+      try{ window.MathJax.typeset(); }catch(_){}
+    }
+  }
+
+  function renderQ(){
+    currentQ = QUESTIONS[idx % QUESTIONS.length];
+
+    $progress.textContent = progressText();
+    $qTitle.textContent = currentQ.title;
+    el('qMeta').textContent = currentQ.qMeta || 'Apply logarithm rules carefully.';
+    $statement.innerHTML = currentQ.statementHTML;
+
+    $hintHtml.innerHTML = (currentQ.hintHTML || '') + RULES_RECAP_HTML;
+
+    ensureLogicIframe();
+
+    $whyHtml.innerHTML = currentQ.whyHTML || '';
+    $unitOut.textContent = currentQ.unitOut || '—';
+
+    setChips(currentQ);
+    renderAuxTable(currentQ);
+
+    $ansVal.value='';
+    $ansVal.disabled=false;
+    clearFeedback();
+    $nextBtn.disabled=true;
+
+    drawGraph(currentQ, false);
+    typesetMath();
+    updateTop();
+  }
+
+  function startWorksheet(){
+    BATCH = parseInt(el('qtyInput').value,10) || 10;
+    QUESTIONS = buildSet(BATCH);
+    idx=0; score=0; correctSoFar=0;
+
+    $endCard.style.display='none';
+    $qCard.style.display='block';
+    el('globalHint').style.display='block';
+
+    renderQ();
+    if(mode==='timed') startTimer();
+  }
+
+  function checkCurrent(){
+    const expected = currentQ.expected;
+    const stu = parseNum($ansVal);
+
+    if(isFinite(stu)) $ansVal.value = to2(stu);
+
+    let ok=false;
+    if(isFinite(stu) && isCorrect2dp(stu, expected)){
+      $markAns.textContent='✓';
+      $markAns.className='marker ok';
+      $fbAns.textContent='Correct.';
+      ok=true;
+    }else if(!isNaN(stu)){
+      $markAns.textContent='✗';
+      $markAns.className='marker no';
+
+      const s = currentQ.subtype;
+      if(s==='product') $fbAns.textContent='Not quite. Use product rule and the table values, then round to 2 dp.';
+      else if(s==='quotient') $fbAns.textContent='Not quite. Use quotient rule and the table values, then round to 2 dp.';
+      else if(s==='power') $fbAns.textContent='Not quite. Use power rule and the table value, then round to 2 dp.';
+      else if(s==='laws') $fbAns.textContent='Not quite. Break into product/quotient/powers using the table, then round to 2 dp.';
+      else if(s==='changebase') $fbAns.textContent='Not quite. Use ln(b)/ln(a) with the provided ln values, then round to 2 dp.';
+      else if(s==='solve') $fbAns.textContent='Not quite. Use the log laws with the provided log values to isolate log(x), then convert to exponential form and round to 2 dp.';
+      else if(s==='db') $fbAns.textContent='Not quite. Use the provided log10(ratio), multiply by 10, then round to 2 dp.';
+      else if(s==='ph') $fbAns.textContent='Not quite. Use pH = n − log10(m) with the provided log10(m), then round to 2 dp.';
+      else if(s==='expk') $fbAns.textContent='Not quite. Use k = (1/t) ln(y/y0) with the provided ln value, then round to 2 dp.';
+      else if(s==='eval') $fbAns.textContent='Not quite. Use log_b(b^k)=k and the special values log_b(1)=0, log_b(b)=1.';
+      else $fbAns.textContent='Not quite. Re-check the log rules and round to 2 dp.';
+    }else{
+      $markAns.textContent='✗';
+      $markAns.className='marker no';
+      $fbAns.textContent='Please enter a number (e.g. 1.26).';
+    }
+
+    drawGraph(currentQ, true);
+
+    idx++;
+    if(ok){ score++; correctSoFar++; }
+
+    $scoreTopVal.textContent = `${score} / ${idx}`;
+    $ansVal.disabled = true;
+    $nextBtn.disabled = false;
+
+    if(mode==='target' && correctSoFar >= target){
+      finish('Target achieved!');
+      return;
+    }
+    if(idx % QUESTIONS.length === 0){
+      QUESTIONS = buildSet(BATCH);
+    }
+  }
+
+  function nextQ(){
+    renderQ();
+  }
+
+  /* ========= UI events ========= */
+  el('checkBtn').addEventListener('click', checkCurrent);
+  el('nextBtn').addEventListener('click', nextQ);
+
+  el('newBtn').addEventListener('click', ()=>{
+    clearInterval(timerId);
+    el('startModal').style.display='flex';
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter'){
+      if(!$nextBtn.disabled) nextQ();
+      else checkCurrent();
+    }
+  });
+
+  function updateModeFields(){
+    const modeVal = document.querySelector('input[name="mode"]:checked')?.value || 'timed';
+    el('timedField').style.display = (modeVal==='timed') ? '' : 'none';
+    el('targetField').style.display = (modeVal==='target') ? '' : 'none';
+  }
+  document.querySelectorAll('input[name="mode"]').forEach(r=>r.addEventListener('change', updateModeFields));
+  updateModeFields();
+
+  el('startBtn').addEventListener('click', ()=>{
+    nameStr = (el('nameInput').value || '').trim() || 'Student';
+    mode = document.querySelector('input[name="mode"]:checked')?.value || 'timed';
+
+    unlimited = false;
+    if(mode==='timed'){
+      const tSel = parseInt(document.querySelector('input[name="tlimit"]:checked')?.value || '1200', 10);
+      unlimited = (tSel===0);
+      timeLeft = unlimited ? 0 : tSel;
+    }else{
+      timeLeft = 0;
+    }
+
+    if(mode==='target'){
+      target = clamp(parseInt(el('targetInput').value,10) || 10, 1, 1000000);
+    }else{
+      target = 0;
+    }
+
+    el('startModal').style.display='none';
+    if(mode==='timed' && unlimited) el('timeTxt').textContent='—';
+    startWorksheet();
+  });
+
+  el('restartBtn').addEventListener('click', ()=>{
+    el('startModal').style.display='flex';
+  });
+
+  el('fsBtn').addEventListener('click', ()=>{
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+  document.addEventListener('fullscreenchange', ()=>{
+    el('fsBtn').textContent = document.fullscreenElement ? '✕ Exit full screen' : '⛶ Full screen';
+  });
+
+  el('startModal').style.display='flex';
+});
+</script>
+</body>
+</html>
 
